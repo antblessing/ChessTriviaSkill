@@ -1,265 +1,248 @@
-/**
- Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
- Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
-
- http://aws.amazon.com/apache2.0/
-
- or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
- */
-
-/**
- * This sample shows how to create a simple Trivia skill with a multiple choice format. The skill
- * supports 1 player at a time, and does not support games across sessions.
- */
-
 'use strict';
 
-/**
- * When editing your questions pay attention to your punctuation. Make sure you use question marks or periods.
- * Make sure the first answer is the correct one. Set at least 4 answers, any extras will be shuffled in.
- */
+
 var questions = [
     {
-        "Reindeer have very thick coats, how many hairs per square inch do they have?": [
-            "13,000",
-            "1,200",
-            "5,000",
-            "700",
-            "1,000",
-            "120,000"
+        "How much is a Pawn worth?": [
+            "1",
+            "3",
+            "5",
+            "9",
+            "2",
+            "4"
         ]
     },
     {
-        "The 1964 classic Rudolph The Red Nosed Reindeer was filmed in:": [
-            "Japan",
-            "United States",
-            "Finland",
-            "Germany"
+        "How much is a Knight worth?": [
+            "3",
+            "4",
+            "5",
+            "6"
         ]
     },
     {
-        "Santas reindeer are cared for by one of the Christmas elves, what is his name?": [
-            "Wunorse Openslae",
-            "Alabaster Snowball",
-            "Bushy Evergreen",
-            "Pepper Minstix"
+        "How much is a Queen worth?": [
+            "9",
+            "12",
+            "8",
+            "15"
         ]
     },
     {
-        "If all of Santas reindeer had antlers while pulling his Christmas sleigh, they would all be:": [
-            "Girls",
-            "Boys",
-            "Girls and boys",
-            "No way to tell"
+        "What is the only piece that cannot move backwards?": [
+            "Pawn",
+            "Knight",
+            "Bishop",
+            "Rook",
+            "King"
         ]
     },
     {
-        "What do Reindeer eat?": [
-            "Lichen",
-            "Grasses",
-            "Leaves",
-            "Berries"
+        "What color moves first?": [
+            "White",
+            "Black",
+            "Yello",
+            "Either side"
         ]
     },
     {
-        "What of the following is not true?": [
-            "Caribou live on all continents",
-            "Both reindeer and Caribou are the same species",
-            "Caribou are bigger than reindeer",
-            "Reindeer live in Scandinavia and Russia"
+        "What is the most important area of the board?": [
+            "Center",
+            "Kingside",
+            "Queenside",
+            "All equally important"
         ]
     },
     {
-        "In what year did Rudolph make his television debut?": [
-            "1964",
-            "1979",
-            "2000",
-            "1956"
+        "Who is the current world champion?": [
+            "Magnus Carlsen",
+            "Viswanathan Anand",
+            "Hikaru Nakamura",
+            "Fabiano Caruana"
         ]
     },
     {
-        "Who was the voice of Rudolph in the 1964 classic?": [
-            "Billie Mae Richards",
-            "Burl Ives",
-            "Paul Soles",
-            "Lady Gaga"
+        "What is a tie called in chess?": [
+            "Draw",
+            "Parlay",
+            "Equality",
+            "No draws in chess"
         ]
     },
     {
-        "In 1939 what retailer used the story of Rudolph the Red Nose Reindeer?": [
-            "Montgomery Ward",
-            "Sears",
-            "Macys",
-            "Kmart"
+        "How many pawns does each player start with?": [
+            "8",
+            "6",
+            "9",
+            "7"
         ]
     },
     {
-        "Santa's reindeer named Donner was originally named what?": [
-            "Dunder",
-            "Donny",
-            "Dweedle",
-            "Dreamy"
+        "What do you say when one of your pieces attacks your opponents king?": [
+            "Check",
+            "Checkmate",
+            "Hey",
+            "Attack"
         ]
     },
     {
-        "Who invented the story of Rudolph?": [
-            "Robert May",
-            "Johnny Marks",
-            "Santa",
-            "J.K. Rowling"
+        "How many squares are on a chessboard?": [
+            "64",
+            "72",
+            "81",
+            "48"
         ]
     },
     {
-        "In what location will you not find reindeer?": [
-            "North Pole",
-            "Lapland",
-            "Korvatunturi mountain",
-            "Finland"
-        ]
-    },
-    {
-        "What Makes Santa's Reindeer Fly?": [
-            "Magical Reindeer Dust",
-            "Fusion",
-            "Amanita muscaria",
-            "Elves"
-        ]
-    },
-    {
-        "Including Rudolph, how many reindeer hooves are there?": [
-            "36",
-            "24",
-            "16",
-            "8"
-        ]
-    },
-    {
-        "Santa only has one female reindeer. Which one is it?": [
-            "Vixen",
-            "Clarice",
-            "Cupid",
-            "Cupid"
-        ]
-    },
-    {
-        "In the 1964 classic Rudolph The Red Nosed Reindeer, what was the snowman narrators name?": [
-            "Sam",
-            "Frosty",
-            "Burl",
-            "Snowy"
-        ]
-    },
-    {
-        "What was Rudolph's father's name?": [
-            "Donner",
-            "Dasher",
-            "Blixen",
-            "Comet"
-        ]
-    },
-    {
-        "In the 1964 movie, What was the name of the coach of the Reindeer Games?": [
-            "Comet",
-            "Blixen",
-            "Donner",
-            "Dasher"
-        ]
-    },
-    {
-        "In the 1964 movie, what is the name of the deer that Rudolph befriends at the reindeer games?": [
-            "Fireball",
-            "Clarice",
-            "Jumper",
-            "Vixen"
-        ]
-    },
-    {
-        "In the 1964 movie, How did Donner, Rudolph's father, try to hide Rudolph's nose?": [
-            "Black mud",
-            "Bag",
-            "Pillow case",
-            "Sock"
-        ]
-    },
-    {
-        "In the 1964 movie, what does the Misfit Elf want to be instead of a Santa Elf?": [
-            "Dentist",
-            "Reindeer",
-            "Toy maker",
-            "Candlestick maker"
-        ]
-    },
-    {
-        "In the 1964 movie,what was the Bumble's one weakness?": [
-            "Could not swim",
-            "Always hungry",
-            "Candy canes",
-            "Cross eyed"
-        ]
-    },
-    {
-        "In the 1964 movie, what is Yukon Cornelius really in search of?": [
-            "Peppermint",
-            "Gold",
+        "What country is Magnus Carlsen from?": [
+            "Norway",
+            "Iceland",
             "India",
-            "Polar Bears"
+            "United States"
         ]
     },
     {
-        "In the 1964 movie, why is the train on the Island of Misfit Toys?": [
-            "Square wheels",
-            "No Engine",
-            "Paint does not match",
-            "It does not toot"
+        "What is the smallest amount of moves for checkmate?": [
+            "2",
+            "3",
+            "4",
+            "1"
         ]
     },
     {
-        "In the 1964 movie, what is the name of the Jack in the Box?": [
-            "Charlie",
-            "Sam",
-            "Billy",
-            "Jack"
+        "Which piece moves in an L shape": [
+            "Knight",
+            "Queen",
+            "Bishop",
+            "King"
         ]
     },
     {
-        "In the 1964 movie, why did Santa Claus almost cancel Christmas?": [
-            "Storm",
-            "No snow",
-            "No toys",
-            "The Reindeer were sick"
+        "Who was the last world champion?": [
+            "Viswanathan Anand",
+            "Bobby Fischer",
+            "Magnus Carlsen",
+            "Veselin Topalov"
         ]
     },
     {
-        "In the 1964 movie, what animal noise did the elf make to distract the Bumble?": [
-            "Oink",
-            "Growl",
-            "Bark",
-            "Meow"
+        "How many points is the Rook worth?": [
+            "5",
+            "6",
+            "4",
+            "3"
         ]
     },
     {
-        "In the 1964 movie, what is the name of the prospector?": [
-            "Yukon Cornelius",
-            "Slider Sam",
-            "Bumble",
-            "Jack"
+        "How many total pieces does each side start with?": [
+            "16",
+            "12",
+            "18",
+            "10"
         ]
     },
     {
-        "How far do reindeer travel when they migrate?": [
-            "3000 miles",
-            "700 miles",
-            "500 miles",
-            "0 miles"
+        "What piece usually has a cross on its head?": [
+            "King",
+            "Bishop",
+            "Rook",
+            "Queen"
         ]
     },
     {
-        "How fast can a reindeer run?": [
-            "48 miles per hour",
-            "17 miles per hour",
-            "19 miles per hour",
-            "14 miles per hour"
+        "Where will the world championship be held in 2016": [
+            "New York",
+            "Germany",
+            "Norway",
+            "India"
+        ]
+    },
+    {
+        "What can pawns do when they reach the end of the board?": [
+            "Promote",
+            "Go backwards",
+            "Capture any piece",
+            "They cannot reach the end of the board"
+        ]
+    },
+    {
+        "What is it called when its your turn and you cannot make any legal moves?": [
+            "Stalemate",
+            "Draw",
+            "Tie",
+            "Checkmate"
+        ]
+    },
+    {
+        "What file does the king start on?": [
+            "E",
+            "D",
+            "F",
+            "G"
+        ]
+    },
+    {
+        "What is the first master title you can achieve in the United States?": [
+            "Candidate Master",
+            "Grandmaster",
+            "National Master",
+            "International Master"
+        ]
+    },
+    {
+        "How many possible moves does white have at the beginning of a game?": [
+            "20",
+            "16",
+            "18",
+            "22"
+        ]
+    },
+    {
+        "Who was the focus of the movie Searching for Bobby Fisher?": [
+            "Josh Waitzkin",
+            "Bobby Fischer",
+            "Hikaru Nakamura",
+            "Wesley So"
+        ]
+    },
+    {
+        "Who did Bobby Fischer play in his last world championship match?": [
+            "Boris Spassky",
+            "Larry Christiansen",
+            "Magnus Carlsen",
+            "Vladimir Kramnik"
+        ]
+    },
+    {
+        "How many points is the Bishop worth?": [
+            "3",
+            "4",
+            "2",
+            "1"
+        ]
+    },
+    {
+        "Who was the last American world champion?": [
+            "Bobby Fischer",
+            "Joel Benjamin",
+            "Hikaru Nakamura",
+            "Fabiano Caruana"
+        ]
+    },
+    {
+        "In an empty board, how many squares does a Knight attack from a center square?": [
+            "8",
+            "4",
+            "6",
+            "12"
+        ]
+    },
+    {
+        "What piece is the most valuable?": [
+            "King",
+            "Queen",
+            "Rook",
+            "Knight"
         ]
     }
 ];
@@ -385,11 +368,11 @@ function onSessionEnded(sessionEndedRequest, session) {
 
 var ANSWER_COUNT = 4;
 var GAME_LENGTH = 5;
-var CARD_TITLE = "Reindeer Games"; // Be sure to change this for your skill.
+var CARD_TITLE = "Chess Trivia"; // Be sure to change this for your skill.
 
 function getWelcomeResponse(callback) {
     var sessionAttributes = {},
-        speechOutput = "Reindeer Games. I will ask you " + GAME_LENGTH.toString()
+        speechOutput = "Chess Trivia. I will ask you " + GAME_LENGTH.toString()
             + " questions, try to get as many right as you can. Just say the number of the answer. Let's begin. ",
         shouldEndSession = false,
 
@@ -649,4 +632,3 @@ function buildResponse(sessionAttributes, speechletResponse) {
         response: speechletResponse
     };
 }
-
